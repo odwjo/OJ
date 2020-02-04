@@ -6,29 +6,27 @@ public:
         }
         auto size = s.size();
         auto column = size / (2 * numRows - 2);
-        vector<size_t> rows(s.size(), 0);
-        // T = 2 * numRows - 2
-        auto T = 2 * numRows - 2;
-        for (size_t j = 0; j != T; ++j) {
-            auto row = j % numRows + 1;
-            if (j >= numRows) {
-                row = numRows - row;
-            }
-            for (size_t i = j; i < s.size(); i += T) {
-                rows[i] = row;
-            }
-        }
-        
+
         string ret;
-        ret.resize(s.size());
-        size_t pos = 0;
-        for (size_t row = 1; row <= numRows; ++row) {
-            for (size_t i = 0; i != s.size(); ++i) {
-                if (row == rows[i]) {
-                    ret[pos++] = s[i];
+        auto T = 2 * numRows - 2;
+        for (size_t j = 0; j != numRows; ++j) {
+            if (j == 0 || j == (numRows - 1)) {
+                for (size_t i = j; i < s.size(); i += T) {
+                    ret += s[i];
+                }
+            } else {
+                for (size_t i = j; i < s.size(); ) {
+                    ret += s[i];
+                    i += 2 * (numRows - j - 1);
+                    if (i >= s.size()) {
+                        break;
+                    }
+                    ret += s[i];
+                    i += 2 * j;
                 }
             }
         }
+        
         return ret;
     }
 };
